@@ -19,9 +19,6 @@ async function main() {
           },
         ],
       },
-      cart: {
-        create: {},
-      },
     },
     create: {
       name: 'Admin',
@@ -36,9 +33,6 @@ async function main() {
             role: RoleEnum.ADMIN,
           },
         ],
-      },
-      cart: {
-        create: {},
       },
     },
   });

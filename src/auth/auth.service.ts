@@ -53,9 +53,6 @@ export class AuthService {
             },
           ],
         },
-        cart: {
-          create: {},
-        },
       },
     });
     delete newUser.password;
