@@ -33,7 +33,6 @@ model User {
   password String
   order    Order[]
   cart     Cart?
-  cartId   String?
 }
 
 model Cart {

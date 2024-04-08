@@ -53,7 +53,7 @@ export class AuthService {
             },
           ],
         },
-        Cart: {
+        cart: {
           create: {},
         },
       },
