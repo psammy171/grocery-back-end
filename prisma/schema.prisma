@@ -32,6 +32,14 @@ model User {
   roles    Role[]
   password String
   Order    Order[]
+  Cart     Cart    @relation(fields: [cartId], references: [id])
+  cartId   String
+}
+
+model Cart {
+  id    String      @id @default(uuid())
+  items OrderItem[]
+  User  User[]
 }
 
 model GroceryItem {
@@ -56,4 +64,6 @@ model OrderItem {
   item          GroceryItem? @relation(fields: [groceryItemId], references: [id])
   Order         Order?       @relation(fields: [orderId], references: [id])
   orderId       String?
+  Cart          Cart?        @relation(fields: [cartId], references: [id])
+  cartId        String?
 }
