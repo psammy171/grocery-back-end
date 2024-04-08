@@ -6,9 +6,10 @@ import { GuardsModule } from './global/guards/guards.module';
 import { PrismaModule } from './global/prisma/prisma.module';
 import { GroceryModule } from './grocery/grocery.module';
 import { GroceryController } from './grocery/grocery.controller';
+import { CartModule } from './cart/cart.module';
 
 @Module({
-  imports: [AuthModule, PrismaModule, GuardsModule, GroceryModule],
+  imports: [AuthModule, PrismaModule, GuardsModule, GroceryModule, CartModule],
   controllers: [AppController, GroceryController],
   providers: [AppService],
 })

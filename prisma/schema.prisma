@@ -51,10 +51,11 @@ model UserOrder {
 }
 
 model OrderItem {
-  id            String       @id @default(uuid())
   quantity      Int
   groceryItemId String
-  item          GroceryItem? @relation(fields: [groceryItemId], references: [id])
-  order         UserOrder?   @relation(fields: [orderId], references: [id])
-  orderId       String?
+  item          GroceryItem @relation(fields: [groceryItemId], references: [id])
+  order         UserOrder   @relation(fields: [orderId], references: [id])
+  orderId       String
+
+  @@id([groceryItemId, orderId])
 }
