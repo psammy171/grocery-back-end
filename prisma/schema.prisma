@@ -38,6 +38,7 @@ model GroceryItem {
   id        String      @id @default(uuid())
   name      String
   price     Int
+  archived  Boolean     @default(false)
   OrderItem OrderItem[]
 }
 
