@@ -21,7 +21,7 @@ enum RoleEnum {
 model Role {
   id     String   @id @default(uuid())
   role   RoleEnum
-  User   User?    @relation(fields: [userId], references: [id])
+  user   User?    @relation(fields: [userId], references: [id])
   userId String?
 }
 
@@ -31,15 +31,15 @@ model User {
   email    String  @unique
   roles    Role[]
   password String
-  Order    Order[]
-  Cart     Cart?
+  order    Order[]
+  cart     Cart?
   cartId   String?
 }
 
 model Cart {
   id     String      @id @default(uuid())
   items  OrderItem[]
-  User   User        @relation(fields: [userId], references: [id])
+  user   User        @relation(fields: [userId], references: [id])
   userId String      @unique
 }
 
@@ -48,7 +48,7 @@ model GroceryItem {
   name      String
   price     Int
   archived  Boolean     @default(false)
-  OrderItem OrderItem[]
+  orderItem OrderItem[]
 }
 
 model Order {
@@ -65,6 +65,6 @@ model OrderItem {
   item          GroceryItem? @relation(fields: [groceryItemId], references: [id])
   Order         Order?       @relation(fields: [orderId], references: [id])
   orderId       String?
-  Cart          Cart?        @relation(fields: [cartId], references: [id])
+  cart          Cart?        @relation(fields: [cartId], references: [id])
   cartId        String?
 }
