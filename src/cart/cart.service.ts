@@ -19,7 +19,11 @@ export class CartService {
         },
       },
     });
-    return cart?.items || [];
+    const modifiedCart = {
+      total: cart?.total || 0,
+      items: cart?.items || [],
+    };
+    return modifiedCart;
   }
 
   async addItemToCart(userId: string, itemId: string) {
@@ -45,6 +49,7 @@ export class CartService {
         data: {
           isCart: true,
           userId: userId,
+          total: item.price,
           items: {
             create: {
               groceryItemId: itemId,
@@ -54,21 +59,29 @@ export class CartService {
         },
       });
     } else {
-      await this.prisma.orderItem.upsert({
+      await this.prisma.userOrder.update({
         where: {
-          groceryItemId_orderId: {
-            groceryItemId: itemId,
-            orderId: cart.id,
+          id: cart.id,
+        },
+        data: {
+          total: { increment: item.price },
+          items: {
+            upsert: {
+              where: {
+                groceryItemId_orderId: {
+                  groceryItemId: itemId,
+                  orderId: cart.id,
+                },
+              },
+              create: {
+                quantity: 1,
+                groceryItemId: itemId,
+              },
+              update: {
+                quantity: { increment: 1 },
+              },
+            },
           },
-        },
-        create: {
-          orderId: cart.id,
-          quantity: 1,
-          groceryItemId: itemId,
-        },
-        update: {
-          quantity: { increment: 1 },
-          groceryItemId: itemId,
         },
       });
     }
@@ -78,6 +91,12 @@ export class CartService {
   }
 
   async removeItemFromCart(userId: string, itemId: string) {
+    const item = await this.prisma.groceryItem.findUnique({
+      where: {
+        id: itemId,
+      },
+    });
+    if (!item) throw new BadRequestException();
     const cart = await this.prisma.userOrder.findFirst({
       where: {
         AND: {
@@ -89,33 +108,47 @@ export class CartService {
         items: true,
       },
     });
-    const item = await this.prisma.orderItem.findUnique({
-      where: {
-        groceryItemId_orderId: {
-          orderId: cart.id,
-          groceryItemId: itemId,
-        },
-      },
-    });
-    if (item.quantity === 1) {
-      await this.prisma.orderItem.delete({
+    if (!cart) throw new BadRequestException();
+    const cartItem = cart.items.find(
+      (crtItm) => crtItm.groceryItemId === item.id,
+    );
+    if (cartItem?.quantity === 1) {
+      await this.prisma.userOrder.update({
         where: {
-          groceryItemId_orderId: {
-            orderId: cart.id,
-            groceryItemId: itemId,
+          id: cart.id,
+        },
+        data: {
+          total: { decrement: item.price },
+          items: {
+            delete: {
+              groceryItemId_orderId: {
+                groceryItemId: itemId,
+                orderId: cart.id,
+              },
+            },
           },
         },
       });
     } else {
-      await this.prisma.orderItem.update({
+      await this.prisma.userOrder.update({
         where: {
-          groceryItemId_orderId: {
-            orderId: cart.id,
-            groceryItemId: itemId,
-          },
+          id: cart.id,
         },
         data: {
-          quantity: { decrement: 1 },
+          total: { decrement: item.price },
+          items: {
+            update: {
+              where: {
+                groceryItemId_orderId: {
+                  orderId: cart.id,
+                  groceryItemId: item.id,
+                },
+              },
+              data: {
+                quantity: { decrement: 1 },
+              },
+            },
+          },
         },
       });
     }
@@ -134,7 +167,6 @@ export class CartService {
         isCart: false,
       },
     });
-    console.log('Cart', cart);
     if (cart.count === 0) throw new BadRequestException();
     return {
       message: 'Cart checked out',
