@@ -34,7 +34,7 @@ export class AuthService {
     });
     dbUser['refreshToken'] = jwt.sign(dbUser, process.env.JWT_SECRET, {
       // expires after 7 days
-      expiresIn: '604800',
+      expiresIn: '604800s',
     });
     return dbUser;
   }

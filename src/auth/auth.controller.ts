@@ -33,4 +33,10 @@ export class AuthController {
     const user = req['user'] as User;
     return this.authService.refreshToken(user.email);
   }
+
+  @UseGuards(UserGuard)
+  @Get('/me')
+  loggedInUser(@Request() req: Req) {
+    return req['user'] as User;
+  }
 }
