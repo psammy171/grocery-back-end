@@ -8,6 +8,7 @@ import { GroceryModule } from './grocery/grocery.module';
 import { GroceryController } from './grocery/grocery.controller';
 import { CartModule } from './cart/cart.module';
 import { OrderModule } from './order/order.module';
+import { AddressModule } from './address/address.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { OrderModule } from './order/order.module';
     GroceryModule,
     CartModule,
     OrderModule,
+    AddressModule,
   ],
   controllers: [AppController, GroceryController],
   providers: [AppService],
