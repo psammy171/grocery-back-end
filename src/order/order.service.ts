@@ -23,6 +23,7 @@ export class OrderService {
             item: true,
           },
         },
+        address: true,
       },
     });
   }
@@ -41,6 +42,7 @@ export class OrderService {
             item: true,
           },
         },
+        address: true,
       },
     });
   }
