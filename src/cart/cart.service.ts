@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/global/prisma/prisma.service';
+import { CheckOutDto } from './dtos/check-out.dto';
 
 @Injectable()
 export class CartService {
@@ -165,7 +166,7 @@ export class CartService {
     };
   }
 
-  async checkoutCartItems(userId: string) {
+  async checkoutCartItems(userId: string, body: CheckOutDto) {
     const cart = await this.prisma.userOrder.updateMany({
       where: {
         isCart: true,
@@ -173,6 +174,7 @@ export class CartService {
       },
       data: {
         isCart: false,
+        addressId: body.addressId,
       },
     });
     if (cart.count === 0) throw new BadRequestException();

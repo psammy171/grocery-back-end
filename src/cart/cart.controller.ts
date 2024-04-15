@@ -12,6 +12,7 @@ import { Request as Req } from 'express';
 import { CartService } from './cart.service';
 import { UserGuard } from 'src/global/guards/user.guard';
 import { CartItemDto } from './dtos/cart-item.dto';
+import { CheckOutDto } from './dtos/check-out.dto';
 
 @UseGuards(UserGuard)
 @Controller('cart')
@@ -37,8 +38,8 @@ export class CartController {
   }
 
   @Post('/checkout')
-  checkoutCart(@Request() req: Req) {
+  checkoutCart(@Request() req: Req, @Body() body: CheckOutDto) {
     const user = req['user'] as User;
-    return this.cartService.checkoutCartItems(user.id);
+    return this.cartService.checkoutCartItems(user.id, body);
   }
 }
