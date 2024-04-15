@@ -116,6 +116,10 @@ export class CartService {
     const cartItem = cart.items.find(
       (crtItm) => crtItm.groceryItemId === item.id,
     );
+    if (!cartItem)
+      return {
+        message: 'Item removed from cart',
+      };
     if (cartItem?.quantity === 1) {
       await this.prisma.userOrder.update({
         where: {
