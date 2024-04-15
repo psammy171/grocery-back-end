@@ -20,6 +20,7 @@ export class CartService {
       },
     });
     const modifiedCart = {
+      cartId: cart?.id || '',
       total: cart?.total || 0,
       items: cart?.items || [],
     };
@@ -44,8 +45,9 @@ export class CartService {
         items: true,
       },
     });
+    let newCart: any;
     if (!cart) {
-      await this.prisma.userOrder.create({
+      newCart = await this.prisma.userOrder.create({
         data: {
           isCart: true,
           userId: userId,
@@ -59,6 +61,7 @@ export class CartService {
         },
       });
     } else {
+      newCart = cart;
       await this.prisma.userOrder.update({
         where: {
           id: cart.id,
@@ -86,6 +89,7 @@ export class CartService {
       });
     }
     return {
+      cartId: newCart.id,
       message: 'Item added to cart',
     };
   }
