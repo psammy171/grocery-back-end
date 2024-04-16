@@ -173,7 +173,7 @@ export class CartService {
         userId: userId,
       },
       data: {
-        date: new Date(),
+        date: new Date().toISOString().substring(0, 10),
         isCart: false,
         addressId: body.addressId,
       },
