@@ -8,6 +8,7 @@ export class GroceryService {
   constructor(private prisma: PrismaService) {}
 
   createGrocery(body: CreateGroceryDto) {
+    if ('id' in body) delete body.id;
     return this.prisma.groceryItem.create({
       data: body,
     });

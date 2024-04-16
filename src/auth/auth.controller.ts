@@ -37,6 +37,7 @@ export class AuthController {
   @UseGuards(UserGuard)
   @Get('/me')
   loggedInUser(@Request() req: Req) {
-    return req['user'] as User;
+    const user = req['user'] as User;
+    return this.authService.currentUser(user.id);
   }
 }

@@ -64,6 +64,26 @@ export class AuthService {
     return newUser;
   }
 
+  async currentUser(id: string) {
+    const orderCount = await this.prisma.userOrder.count({
+      where: {
+        userId: id,
+      },
+    });
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        addresses: true,
+      },
+    });
+    return {
+      ...user,
+      orderCount: orderCount,
+    };
+  }
+
   async refreshToken(email: string) {
     const dbUser = await this.prisma.user.findUnique({
       where: {
