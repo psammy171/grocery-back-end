@@ -173,6 +173,7 @@ export class CartService {
         userId: userId,
       },
       data: {
+        date: new Date(),
         isCart: false,
         addressId: body.addressId,
       },

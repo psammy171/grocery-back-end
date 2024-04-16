@@ -60,6 +60,7 @@ model UserOrder {
   user      User        @relation(fields: [userId], references: [id])
   userId    String
   total     Int         @default(0)
+  date      DateTime?
   isCart    Boolean     @default(true)
   items     OrderItem[]
   address   Address?    @relation(fields: [addressId], references: [id])

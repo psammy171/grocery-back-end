@@ -64,4 +64,11 @@ export class GroceryController {
   allGrocery() {
     return this.groceryService.allGroceries();
   }
+
+  @UseGuards(AdminGuard)
+  @UseGuards(UserGuard)
+  @Get('/all')
+  allGroceryForCRUD() {
+    return this.groceryService.allGroceriesForCRUD();
+  }
 }

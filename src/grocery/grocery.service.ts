@@ -23,9 +23,12 @@ export class GroceryService {
   }
 
   deleteGrocery(id: string) {
-    return this.prisma.groceryItem.delete({
+    return this.prisma.groceryItem.update({
       where: {
         id: id,
+      },
+      data: {
+        archived: true,
       },
     });
   }
@@ -39,6 +42,14 @@ export class GroceryService {
   }
 
   allGroceries() {
+    return this.prisma.groceryItem.findMany({
+      where: {
+        archived: false,
+      },
+    });
+  }
+
+  allGroceriesForCRUD() {
     return this.prisma.groceryItem.findMany();
   }
 }
