@@ -17,6 +17,9 @@ async function main() {
           {
             role: RoleEnum.ADMIN,
           },
+          {
+            role: RoleEnum.SUPER_ADMIN,
+          },
         ],
       },
     },
@@ -31,6 +34,9 @@ async function main() {
           },
           {
             role: RoleEnum.ADMIN,
+          },
+          {
+            role: RoleEnum.SUPER_ADMIN,
           },
         ],
       },

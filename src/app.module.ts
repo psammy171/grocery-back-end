@@ -9,6 +9,7 @@ import { GroceryController } from './grocery/grocery.controller';
 import { CartModule } from './cart/cart.module';
 import { OrderModule } from './order/order.module';
 import { AddressModule } from './address/address.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { AddressModule } from './address/address.module';
     CartModule,
     OrderModule,
     AddressModule,
+    UserModule,
   ],
   controllers: [AppController, GroceryController],
   providers: [AppService],
