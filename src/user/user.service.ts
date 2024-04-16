@@ -8,7 +8,10 @@ export class UserService {
 
   allUsers() {
     return this.prisma.user.findMany({
-      include: {
+      select: {
+        id: true,
+        name: true,
+        email: true,
         addresses: true,
         roles: true,
       },
