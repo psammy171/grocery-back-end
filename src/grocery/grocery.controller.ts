@@ -40,6 +40,13 @@ export class GroceryController {
 
   @UseGuards(AdminGuard)
   @UseGuards(UserGuard)
+  @Get('/all')
+  allGroceryForCRUD() {
+    return this.groceryService.allGroceriesForCRUD();
+  }
+
+  @UseGuards(AdminGuard)
+  @UseGuards(UserGuard)
   @Patch('/:groceryId')
   updateGrocery(
     @Param('groceryId') groceryId: string,
@@ -63,12 +70,5 @@ export class GroceryController {
   @Get('/')
   allGrocery() {
     return this.groceryService.allGroceries();
-  }
-
-  @UseGuards(AdminGuard)
-  @UseGuards(UserGuard)
-  @Get('/all')
-  allGroceryForCRUD() {
-    return this.groceryService.allGroceriesForCRUD();
   }
 }

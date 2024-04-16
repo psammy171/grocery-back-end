@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateGroceryDto } from './dtos/create-grocery.dto';
 import { PrismaService } from 'src/global/prisma/prisma.service';
 import { UpdateGroceryDto } from './dtos/update-grocery.dto';
@@ -13,7 +13,16 @@ export class GroceryService {
     });
   }
 
-  updateGrocery(id: string, body: UpdateGroceryDto) {
+  async updateGrocery(id: string, body: UpdateGroceryDto) {
+    const item = await this.prisma.groceryItem.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    if (!item) throw new NotFoundException();
+    if ('id' in body) {
+      delete body.id;
+    }
     return this.prisma.groceryItem.update({
       where: {
         id: id,

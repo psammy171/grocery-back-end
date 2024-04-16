@@ -1,4 +1,5 @@
 import {
+  IsBoolean,
   IsNumber,
   IsOptional,
   IsPositive,
@@ -16,4 +17,8 @@ export class UpdateGroceryDto {
   @IsPositive()
   @IsOptional()
   price: number;
+
+  @IsOptional()
+  @IsBoolean()
+  archived: boolean;
 }
