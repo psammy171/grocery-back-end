@@ -1,7 +1,6 @@
 import {
   IsBoolean,
   IsNumber,
-  IsOptional,
   IsPositive,
   IsString,
   MinLength,
@@ -10,15 +9,12 @@ import {
 export class UpdateGroceryDto {
   @IsString()
   @MinLength(3)
-  @IsOptional()
   name: string;
 
   @IsNumber()
   @IsPositive()
-  @IsOptional()
   price: number;
 
-  @IsOptional()
   @IsBoolean()
   archived: boolean;
 }
