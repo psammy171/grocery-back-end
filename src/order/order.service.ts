@@ -46,4 +46,17 @@ export class OrderService {
       },
     });
   }
+
+  async overview() {
+    const totalUsers = await this.prisma.user.count();
+    const totalOrders = await this.prisma.userOrder.count({
+      where: {
+        isCart: false,
+      },
+    });
+    return {
+      totalUsers,
+      totalOrders,
+    };
+  }
 }

@@ -16,6 +16,12 @@ export class OrderController {
     return this.orderService.allOrders();
   }
 
+  @UseGuards(AdminGuard)
+  @Get('/overview')
+  overview() {
+    return this.orderService.overview();
+  }
+
   @Get('/my-orders')
   myOrders(@Request() req: Req) {
     const user = req['user'] as User;
