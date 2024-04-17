@@ -49,6 +49,14 @@ export class OrderService {
 
   async overview() {
     const totalUsers = await this.prisma.user.count();
+    const revenue = await this.prisma.userOrder.aggregate({
+      where: {
+        isCart: false,
+      },
+      _sum: {
+        total: true,
+      },
+    });
     const totalOrders = await this.prisma.userOrder.count({
       where: {
         isCart: false,
@@ -57,6 +65,7 @@ export class OrderService {
     return {
       totalUsers,
       totalOrders,
+      revenue: revenue._sum.total,
     };
   }
 }
