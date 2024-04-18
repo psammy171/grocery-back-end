@@ -1,7 +1,17 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignupDto } from './dtos/signup.dto';
 import { LoginDto } from './dtos/login.dto';
+import { UserGuard } from 'src/global/guards/user.guard';
+import { Request as Req } from 'express';
+import { User } from '@prisma/client';
 
 @Controller('auth')
 export class AuthController {
@@ -15,5 +25,19 @@ export class AuthController {
   @Post('/signup')
   signup(@Body() body: SignupDto) {
     return this.authService.signup(body);
+  }
+
+  @UseGuards(UserGuard)
+  @Get('/refresh-token')
+  refreshToken(@Request() req: Req) {
+    const user = req['user'] as User;
+    return this.authService.refreshToken(user.email);
+  }
+
+  @UseGuards(UserGuard)
+  @Get('/me')
+  loggedInUser(@Request() req: Req) {
+    const user = req['user'] as User;
+    return this.authService.currentUser(user.id);
   }
 }

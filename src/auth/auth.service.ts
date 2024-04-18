@@ -29,7 +29,12 @@ export class AuthService {
     if (!isPasswordCorrect) throw new UnauthorizedException();
     delete dbUser.password;
     dbUser['accessToken'] = jwt.sign(dbUser, process.env.JWT_SECRET, {
-      expiresIn: '86400s',
+      // expires after 1 hour
+      expiresIn: '3600s',
+    });
+    dbUser['refreshToken'] = jwt.sign(dbUser, process.env.JWT_SECRET, {
+      // expires after 7 days
+      expiresIn: '604800s',
     });
     return dbUser;
   }
@@ -57,5 +62,41 @@ export class AuthService {
     });
     delete newUser.password;
     return newUser;
+  }
+
+  async currentUser(id: string) {
+    // const orderCount = await this.prisma.userOrder.count({
+    //   where: {
+    //     userId: id,
+    //   },
+    // });
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        addresses: true,
+      },
+    });
+    return user;
+  }
+
+  async refreshToken(email: string) {
+    const dbUser = await this.prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+      include: {
+        roles: true,
+      },
+    });
+    if (!dbUser) throw new UnauthorizedException();
+    const newToken = jwt.sign(dbUser, process.env.JWT_SECRET, {
+      // expires after 1 hour
+      expiresIn: '3600s',
+    });
+    return {
+      accessToken: newToken,
+    };
   }
 }
