@@ -8,6 +8,7 @@ async function main() {
     },
     update: {
       name: 'Admin',
+      // password : Admin@1234
       password: '$2b$12$ZwpGuNErXpWaepgbLv0.guA6.B1kImLyUXVOnDZXfhUOViM0LsfoK',
       roles: {
         create: [
